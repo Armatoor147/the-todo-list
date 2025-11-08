@@ -11,6 +11,7 @@ This app impletents the functionality of a TODO list. It is programmed through f
 
 - Back-End: Node.js
 - Front-End: React.js
+- Database: MongoDB (Atlas)
 - CI/CD: GItHub Actions
 - Containerisation and Orchestration: Docker + Kubernetes
 - Cloud: Microsoft Azure
@@ -31,10 +32,18 @@ TODO!
 1. Set up GitHub
 2. Develop back-en + front-end
 
+Installation:
 ```sh
 npm init -y
-npm install express body-parser
+npm install express body-parser mongoose dotenv cors
 ```
+
+Start the Node.js server:
+```sh
+node app.js
+```
+
+
 
 3. Containerise
 4. Define CI/CD
