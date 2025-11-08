@@ -13,7 +13,7 @@ This app impletents the functionality of a TODO list. It is programmed through f
 - Front-End: React.js
 - CI/CD: GItHub Actions
 - Containerisation and Orchestration: Docker + Kubernetes
-- Cloud: Azure
+- Cloud: Microsoft Azure
 - Scripting (for automation): Bash
 
 
@@ -30,6 +30,12 @@ TODO!
 
 1. Set up GitHub
 2. Develop back-en + front-end
+
+```sh
+npm init -y
+npm install express body-parser
+```
+
 3. Containerise
 4. Define CI/CD
 5. Write script to deploy app
