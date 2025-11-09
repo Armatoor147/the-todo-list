@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3001;
 const MONGODB_URI = process.env.MONGODB_URI
 
 const corsOptions = {
-  origin: 'http://the-todo-list:3000', // TODO: Replace this with frontend's URL
+  origin: 'http://localhost:3000', // TODO: Replace this with frontend's URL (for production)
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
