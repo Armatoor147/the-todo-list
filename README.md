@@ -65,10 +65,58 @@ npm run dev
 
 
 4. Containerise
-5. Define CI/CD
-6. Write script to deploy app
-7. Deploy app to cloud
-8. Write documentation
+
+Build the backend Docker image and run the backend container:
+```sh
+docker build -t todo-backend .
+docker run -p 3001:3001 --env-file .env -d todo-backend
+```
+
+Build the frontend Docker image and run the backend container:
+```sh
+docker build -t todo-frontend .
+docker run -p 3000:3000 -d todo-frontend
+```
+
+Run both containers with Dock Compose:
+```sh
+docker-compose up -d
+```
+
+Stop the Dock Compose:
+```sh
+# Stop all running containers defined in the `docker-compose.yml`
+docker-compose down
+
+# Stop container without removing them
+docker-compose stop
+
+# Restart containers
+docker-compose start
+
+# View running containers
+docker ps
+
+# View logs of the containers
+docker-compose logs
+
+# Follow logs in real-time
+docker-compose logs -f
+
+# Remove all stopped containers, networks, and volumes
+docker system prune
+```
+
+
+5. Orchestration
+
+
+
+
+6. Define CI/CD
+7. Write script to deploy app
+8. Deploy app to cloud
+9. Write documentation
 
 
 ## Application Utilisation
