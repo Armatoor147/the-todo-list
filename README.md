@@ -10,7 +10,7 @@ This app impletents the functionality of a TODO list. It is programmed through f
 ### Tools
 
 - Back-End: Node.js
-- Front-End: React.js
+- Front-End: Next.js
 - Database: MongoDB (Atlas)
 - CI/CD: GItHub Actions
 - Containerisation and Orchestration: Docker + Kubernetes
@@ -30,7 +30,7 @@ TODO!
 ## Development Plan
 
 1. Set up GitHub
-2. Develop back-en + front-end
+2. Develop back-en
 
 Installation:
 ```sh
@@ -44,12 +44,31 @@ node app.js
 ```
 
 
+3. Develop front-end
 
-3. Containerise
-4. Define CI/CD
-5. Write script to deploy app
-6. Deploy app to cloud
-7. Write documentation
+Set up the React App:
+```sh
+# Run from src/
+npx create-next-app@latest frontend --use-npm --typescript # Choose ESLint, React Compiler (Yes), Tailwind CSS (Yes), `src/` directory (No), App Router (Yes), Turbopack (Yes), customize the import alias (No)
+cd frontend
+```
+
+Installation:
+```sh
+npm install axios
+```
+
+Start the Next.js development server:
+```sh
+npm run dev
+```
+
+
+4. Containerise
+5. Define CI/CD
+6. Write script to deploy app
+7. Deploy app to cloud
+8. Write documentation
 
 
 ## Application Utilisation
