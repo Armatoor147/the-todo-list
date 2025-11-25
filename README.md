@@ -29,8 +29,8 @@ TODO!
 
 ## Development Plan
 
-1. Set up GitHub
-2. Develop back-en
+### 1. Set up GitHub
+### 2. Develop Backend
 
 Installation:
 ```sh
@@ -44,7 +44,7 @@ node app.js
 ```
 
 
-3. Develop front-end
+### 3. Develop Frontend
 
 Set up the React App:
 ```sh
@@ -64,19 +64,35 @@ npm run dev
 ```
 
 
-4. Containerise
+### 4. Containerise
 
 Build the backend Docker image and run the backend container:
 ```sh
-docker build -t todo-backend .
+docker build -t todo-backend:<version> .
 docker run -p 3001:3001 --env-file .env -d todo-backend
 ```
 
 Build the frontend Docker image and run the backend container:
 ```sh
-docker build -t todo-frontend .
-docker run -p 3000:3000 -d todo-frontend
+docker build -t todo-frontend:<version> .
+docker run -p 3000:3000 --env-file .env -d todo-frontend
 ```
+
+Stop the Docker containers from running and delete them:
+```sh
+# View running containers
+docker ps
+
+# Stop the container
+docker stop <CONTAINER ID> # or `docker stop <CONTAINER NAME>`
+
+# View all containers
+docker ps -a
+
+# Delete container
+docker rm <CONTAINER ID>
+```
+
 
 Run both containers with Dock Compose:
 ```sh
@@ -108,20 +124,86 @@ docker system prune
 ```
 
 
-5. Orchestration
+### 5. Orchestration
+
+#### Minikube (local deployment)
 
 
 
+Install and start Minikube (if it has not been done):
+```sh
+brew install minikube
+minikube start
+```
 
-6. Define CI/CD
-7. Write script to deploy app
-8. Deploy app to cloud
-9. Write documentation
+Deploy backend:
+```sh
+# Build backend Docker image
+docker build -t todo-backend:<version> .
+
+# Load backend Docker image to Minikube
+minikube image load todo-backend:<version>
+
+
+
+# Go to `backend-deployment.yaml` and change `image: todo-backend:<version>` with the current version.
+
+# Apply backend Kubernetes configuration
+kubectl apply -f mongodb-secret.yaml
+kubectl apply -f backend-deployment.yaml
+
+
+# Return the backend URL to access server
+minikube service todo-backend --url
+```
+
+
+Deploy frontend:
+```sh
+# Build frontend Docker image (Get BACKEND URL from the previous minikube service command)
+docker build -t todo-frontend:<version> \
+    --build-arg NEXT_PUBLIC_API_URL="<BACKEND URL>" \
+    .
+
+# Load frontend Docker image to Minikube:
+minikube image load todo-frontend:<version>
+
+
+# Go to `frontend-deployment.yaml` and change `image: todo-frontend:<version>` with the current version.
+
+# Apply frontend Kubernetes configuration
+kubectl apply -f frontend-deployment.yaml
+
+# Return the frontend URL to access client
+minikube service todo-frontend
+```
+
+
+
+### 6. Define CI/CD
+### 7. Write script to deploy app
+### 8. Deploy app to cloud
+### 9. Write documentation
 
 
 ## Application Utilisation
 
-TODO!
+1. Local Node Deployment
+
+- Deploy app:
+```sh
+# Deploy the server on src/backend
+node app.js
+
+# Deploy the client on src/frontend
+npm run dev
+```
+
+- Test app at `http://localhost:3000`
+
+
+2. Local Docker Deployment:
+
 
 
 ## License
