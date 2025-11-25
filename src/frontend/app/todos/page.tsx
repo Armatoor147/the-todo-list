@@ -10,15 +10,23 @@ interface Task {
   completed: boolean;
 }
 
+const MY_VARIABLE = 'Hello World! Here is Vincent!';
+console.log(MY_VARIABLE);
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL; // || 'http://localhost:3001';
+console.log("API_URL:", process.env.NEXT_PUBLIC_API_URL); // For debugging
+
 export default function TodosPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
   useEffect(() => {
+    console.log(MY_VARIABLE);
+    console.log("API_URL:", process.env.NEXT_PUBLIC_API_URL);
     const fetchTasks = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/api/tasks');
+        const response = await axios.get(`${API_URL}/api/tasks`);
         setTasks(response.data);
       } catch (error) {
         console.error('Error fetching tasks:', error);
@@ -28,10 +36,8 @@ export default function TodosPage() {
   }, []);
 
   const addTask = async () => {
-    console.log("PEANUTS!!!")
     try {
-      console.log("Hello!!!")
-      const response = await axios.post('http://localhost:3001/api/tasks', {
+      const response = await axios.post(`${API_URL}/api/tasks`, {
         title,
         description,
       });
@@ -48,7 +54,7 @@ export default function TodosPage() {
     try {
       const task = tasks.find((t) => t._id === id);
       if (!task) return;
-      const response = await axios.put(`http://localhost:3001/api/tasks/${id}`, {
+      const response = await axios.put(`${API_URL}/api/tasks/${id}`, {
         title: task.title,
         description: task.description,
         completed: !task.completed,
@@ -61,7 +67,7 @@ export default function TodosPage() {
 
   const deleteTask = async (id: string) => {
     try {
-      await axios.delete(`http://localhost:3001/api/tasks/${id}`);
+      await axios.delete(`${API_URL}/api/tasks/${id}`);
       setTasks(tasks.filter((t) => t._id !== id));
     } catch (error) {
       console.error('Error deleting task:', error);

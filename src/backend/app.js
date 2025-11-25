@@ -9,8 +9,9 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const MONGODB_URI = process.env.MONGODB_URI
 
+const CLIENT_URL = process.env.ALLOWED_ORIGIN || 'http://localhost:3000'; // TODO: Replace this with frontend's URL (for production) (Done!)
 const corsOptions = {
-  origin: 'http://localhost:3000', // TODO: Replace this with frontend's URL (for production)
+  origin: CLIENT_URL,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-backend
+  template:
+    metadata:
+      labels:
+        app: todo-backend
+    spec:
+      containers:
+      - name: todo-backend
+        image: todo-backend:v10
+        imagePullPolicy: IfNotPresent # For local images in Minikube
+        ports:
+        - containerPort: 3001
+        envFrom:
+        - secretRef:
+            name: mongodb-secret
+        env:
+        - name: ALLOWED_ORIGIN
+          value: "*"  # Set to "*" for Minikube development; Replace with the actual frontend URL when deploying to the cloud (i.e. production)
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-backend
+spec:
+  selector:
+    app: todo-backend
+  ports:
+    - protocol: TCP
+      port: 3001
+      targetPort: 3001
+  type: ClusterIP
