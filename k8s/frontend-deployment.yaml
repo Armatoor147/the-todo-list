@@ -14,13 +14,13 @@ spec:
     spec:
       containers:
       - name: todo-frontend
-        image: todo-frontend:v10
-        imagePullPolicy: IfNotPresent # For local images in Minikube
+        image: acrvincentstodolist1.azurecr.io/todo-frontend:v14
+        imagePullPolicy: Always # IfNotPresent (For local images in Minikube), Always (for AKS)
         ports:
         - containerPort: 3000
         env:
         - name: NEXT_PUBLIC_API_URL
-          value: "http://127.0.0.1:65098"  # Use the internal Kubernetes DNS name
+          value: "http://todo-backend:3001"
 ---
 apiVersion: v1
 kind: Service

@@ -183,6 +183,71 @@ minikube service todo-frontend
 ### 6. Define CI/CD
 ### 7. Write script to deploy app
 ### 8. Deploy app to cloud
+
+Build Docker images:
+```sh
+# Build backend Docker image
+docker build -t todo-backend:<version> .
+
+# Build frontend Docker image
+docker build -t todo-frontend:<version> \
+    --build-arg NEXT_PUBLIC_API_URL="http://todo-backend:3001" \
+    .
+```
+
+
+Deploy to the cloud:
+```sh
+# Log in to Azure
+az login
+
+# Create a resource group
+az group create --name myAKSResourceGroup1 --location belgiumcentral
+
+# Create an Azure Container Registry (ACR)
+az acr create --resource-group myAKSResourceGroup1 --name acrvincentstodolist1 --sku Basic
+
+# Push Docker Images to ACR
+az acr login --name acrvincentstodolist1
+docker tag todo-backend:<version> acrvincentstodolist1.azurecr.io/todo-backend:<version>
+docker push acrvincentstodolist1.azurecr.io/todo-backend:<version>
+docker tag todo-frontend:<version> acrvincentstodolist1.azurecr.io/todo-frontend:<version>
+docker push acrvincentstodolist1.azurecr.io/todo-frontend:<version>
+
+# Create an AKS Cluster
+az aks create \
+  --resource-group myAKSResourceGroup1 \
+  --name myAKSCluster \
+  --node-count 1 \
+  --enable-addons monitoring \
+  --generate-ssh-keys \
+  --attach-acr acrvincentstodolist1
+
+# Configure kubectl to Connect to AKS
+az aks get-credentials --resource-group myAKSResourceGroup1 --name myAKSCluster
+
+# Go to `backend-deployment.yaml` and change `image: acrvincentstodolist1.azurecr.io/todo-backend:<version>` with the current version.
+# Go to `frontend-deployment.yaml` and change `image: acrvincentstodolist1.azurecr.io/todo-frontend:<version>` with the current version.
+
+# Apply Kubernetes configuration
+kubectl apply -f mongodb-secret.yaml
+kubectl apply -f backend-deployment.yaml
+kubectl apply -f frontend-deployment.yaml
+
+# Access app
+kubectl get services
+
+# Open browser and navigate to "http://<EXTERNAL-IP>:3000/todos"
+
+# Scale app
+kubectl scale deployment todo-backend --replicas=2
+kubectl scale deployment todo-frontend --replicas=2
+
+# Clean up
+az group delete --name myAKSResourceGroup1 --yes --no-wait
+```
+
+
 ### 9. Write documentation
 
 

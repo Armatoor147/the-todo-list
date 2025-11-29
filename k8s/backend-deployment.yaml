@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
       - name: todo-backend
-        image: todo-backend:v10
-        imagePullPolicy: IfNotPresent # For local images in Minikube
+        image: acrvincentstodolist1.azurecr.io/todo-backend:v14
+        imagePullPolicy: Always # IfNotPresent (For local images in Minikube), Always (for AKS)
         ports:
         - containerPort: 3001
         envFrom:
@@ -36,4 +36,4 @@ spec:
     - protocol: TCP
       port: 3001
       targetPort: 3001
-  type: ClusterIP
+  type: ClusterIP # Use LoadBalancer for external access (production); Use NodePort for external access (development); Use ClusterIP for internal (cluster) communication
